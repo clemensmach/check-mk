@@ -3,7 +3,7 @@
 Write-Host "0 HyperVReplica-Version - 1.0.0"
 
 
-# TODO - fix error if VM name has whitespaces in name
+# TODO - fix error if VM has whitespaces in name
 # TODO - implement performance data (Measure-VMReplicaiton)
 # TODO - implement all health states
 
@@ -39,7 +39,7 @@ Try {
         }
     }
     Else {
-        Write-Host "3 HyperVReplica - no VMs found?"
+        Write-Host "3 HyperVReplica - no VMs found. UAC issue?"
     } 
 }
 Catch {
