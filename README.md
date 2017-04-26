@@ -9,5 +9,5 @@ monitor linux system time
 
 ### hyperv_replica.ps1
 
-check hyper-v relpication status of VMs
+check hyper-v replication status of VMs
 
