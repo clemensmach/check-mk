@@ -13,6 +13,10 @@ check hyper-v replication status of VMs
 
 #### Changelog
 
+##### 1.0.2
+ 
+ - added average sync size
+
 ##### 1.0.1
 
  - fixed error with special chars (replace all non alphanumeric chars with "-")

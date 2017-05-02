@@ -1,13 +1,6 @@
 # Hyper V Replica Status Monitoring
-# Version 1.0.1
-Write-Host "0 HyperVReplica-Version - 1.0.1"
-
-
-# TODO - implement performance data (Measure-VMReplicaiton)
-# TODO - implement all health states
-
-
-#Get-VMReplication -ReplicationMode Primary
+# Version 1.0.2
+Write-Host "0 HyperVReplica-Version - 1.0.2"
 
 
 Try {
@@ -17,10 +10,21 @@ Try {
 
 			$name = $VM.Name -replace '[^a-zA-Z0-9\.]','-'
 		
-            switch ($VM.ReplicationHealth) {
-                "Normal" { Write-Host "0 HyperVReplica-$($name) syncsize=0 Sync OK State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
-                "Warning" { Write-Host "1 HyperVReplica-$($name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
-                "Critical" { Write-Host "2 HyperVReplica-$($name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+			# sync size is only available if replication is activated
+			if ($VM.ReplicationHealth -ne "NotApplicable") {
+				# get sync size
+				$replica = Measure-VMReplication -VMName $VM.Name
+				$syncSize = $replica.AvgReplSize
+				# convert to MB
+				$syncSize = [math]::Round($syncSize / 1024 / 1024)
+				#Write-Host "### DEBUG ### - ReplSize: $syncSize"
+			}
+		
+			# check health
+			switch ($VM.ReplicationHealth) {
+                "Normal" { Write-Host "0 HyperVReplica-$($name) syncsize=$syncSize Sync OK State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+                "Warning" { Write-Host "1 HyperVReplica-$($name) syncsize=$syncSize State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+                "Critical" { Write-Host "2 HyperVReplica-$($name) syncsize=$syncSize State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
                 "NotApplicable" { Write-Host "0 HyperVReplica-$($name) syncsize=0 no replica" }
                 # ReplicationState
                 #"FailOverWaitingCompletion" {This state indicates that the failover is still in progress.}
