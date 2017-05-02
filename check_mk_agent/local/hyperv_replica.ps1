@@ -1,12 +1,10 @@
 # Hyper V Replica Status Monitoring
-# Version 1.0.0
-Write-Host "0 HyperVReplica-Version - 1.0.0"
+# Version 1.0.1
+Write-Host "0 HyperVReplica-Version - 1.0.1"
 
 
-# TODO - fix error if VM has whitespaces in name
 # TODO - implement performance data (Measure-VMReplicaiton)
 # TODO - implement all health states
-
 
 
 #Get-VMReplication -ReplicationMode Primary
@@ -17,11 +15,13 @@ Try {
     If ($vmlist.count -gt 0) {
         Foreach($VM in $vmlist) {  
 
+			$name = $VM.Name -replace '[^a-zA-Z0-9\.]','-'
+		
             switch ($VM.ReplicationHealth) {
-                "Normal" { Write-Host "0 HyperVReplica-$($VM.Name) syncsize=0 Sync OK State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
-                "Warning" { Write-Host "1 HyperVReplica-$($VM.Name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
-                "Critical" { Write-Host "2 HyperVReplica-$($VM.Name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
-                "NotApplicable" { Write-Host "0 HyperVReplica-$($VM.Name) syncsize=0 no replica" }
+                "Normal" { Write-Host "0 HyperVReplica-$($name) syncsize=0 Sync OK State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+                "Warning" { Write-Host "1 HyperVReplica-$($name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+                "Critical" { Write-Host "2 HyperVReplica-$($name) syncsize=0 State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }
+                "NotApplicable" { Write-Host "0 HyperVReplica-$($name) syncsize=0 no replica" }
                 # ReplicationState
                 #"FailOverWaitingCompletion" {This state indicates that the failover is still in progress.}
                 #"FailedOver" {This state indicates that the virtual machine failover is completed.}
@@ -33,7 +33,7 @@ Try {
                 #SyncedReplicationComplete: Resynchronization has been completed successfully for the virtual machine.
                 #WaitingForInitialReplication: This state is shown on the Replica Virtual Machine. This indicates that the replication is enabled for the virtual machine and a pointer has been created for the virtual machine at the Replica Server, but the initial replication has not been completed yet. On the Primary Server, the "ReadyForInitialReplication" replication state will be shown.
                 #WaitingForStartResynchronize: A virtual machine may enter into this replication state if resynchronization needs to be done.
-                default { Write-Host "3 HyperVReplica-$($VM.Name) syncsize=0 Unknown ReplicaHealth State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }                    
+                default { Write-Host "3 HyperVReplica-$($name) syncsize=0 Unknown ReplicaHealth State: $($VM.ReplicationState)  Health: $($VM.ReplicationHealth)" }                    
             }
 
         }

@@ -11,3 +11,14 @@ monitor linux system time
 
 check hyper-v replication status of VMs
 
+##### Changelog
+
+####### 1.0.1
+
+ - fixed error with special chars (replace all non alphanumeric chars with "-")
+
+####### 1.0.0
+
+ - initial release
+
+
