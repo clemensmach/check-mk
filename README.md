@@ -5,7 +5,7 @@ All my [check_mk](https://mathias-kettner.de/check_mk.html) related stuff
 
 ### systemtime.sh
 
-monitor linux system time 
+monitor linux system time
 
 ### hyperv_replica.ps1
 
@@ -25,4 +25,7 @@ check hyper-v replication status of VMs
 
  - initial release
 
+# notifications
 
+## mastodon
+send a private message to one hardcoded account
