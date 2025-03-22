@@ -8,16 +8,18 @@ mastodonUrl = "/api/v1/statuses"
 mastodon = mastodonHost + mastodonUrl + "?access_token=" + mastodonToken
 
 
-tpl_host_text = """*Check_MK: $HOSTNAME$ - $EVENT_TXT$*
-Host: $HOSTNAME$
-Alias: $HOSTALIAS$
-Address: $HOSTADDRESS$
-Event: $EVENT_TXT$
-Output: $HOSTOUTPUT$
+tpl_host_text = """*$HOSTNAME$ - $EVENT_TXT$*
+```
+Host:     $HOSTNAME$
+Alias:    $HOSTALIAS$
+Address:  $HOSTADDRESS$
+Event:    $EVENT_TXT$
+Output:   $HOSTOUTPUT$
 
-$LONGHOSTOUTPUT$"""
+$LONGHOSTOUTPUT$```"""
 
-tpl_service_text = """*Check_MK: $HOSTNAME$/$SERVICEDESC$ $EVENT_TXT$*
+tpl_service_text = """*$HOSTNAME$/$SERVICEDESC$ $EVENT_TXT$*
+```
 Host:     $HOSTNAME$
 Alias:    $HOSTALIAS$
 Address:  $HOSTADDRESS$
@@ -25,11 +27,11 @@ Service:  $SERVICEDESC$
 Event:    $EVENT_TXT$
 Output:   $SERVICEOUTPUT$
 
-$LONGSERVICEOUTPUT$"""
+$LONGSERVICEOUTPUT$```"""
 
 def send_mastodon_msg(text):
     headers = {'Content-Type':'application/x-www-form-URLencoded'}
-    text = '@user@example.com Monitoring: ' + text
+    text = text + ' @user@example.com Monitoring'
     data = {'status':text, 'visibility':'direct'}
     try:
         r = requests.post(mastodon, headers=headers, data=data)
