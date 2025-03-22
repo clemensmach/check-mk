@@ -43,7 +43,7 @@ def fetch_notification_context():
     context = {}
     for (var, value) in os.environ.items():
         if var.startswith("NOTIFY_"):
-            context[var[7:]] = value.decode("utf-8")
+            context[var[7:]] = value #.decode("utf-8")
     return context
 
 def substitute_context(template, context):
