@@ -31,7 +31,7 @@ $LONGSERVICEOUTPUT$```"""
 
 def send_mastodon_msg(text):
     headers = {'Content-Type':'application/x-www-form-URLencoded'}
-    text = text + ' @user@example.com Monitoring'
+    text = text[:420] + ' @user@example.com Monitoring'
     data = {'status':text, 'visibility':'direct'}
     try:
         r = requests.post(mastodon, headers=headers, data=data)
